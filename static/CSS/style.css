@@ -1,0 +1,66 @@
+@import url("https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap");
+
+h1 {
+  font-family: "Luckiest Guy", cursive;
+  text-shadow: 5px 2px 2px rgba(0, 0, 0, 0.781);
+  font-size: 50px !important;
+  color: rgb(151, 75, 75);
+  letter-spacing: 4px;
+}
+
+.content {
+  height: 100vh;
+}
+
+.card-radius {
+  border-radius: 25px !important;
+  box-shadow: 2px 3px 3px rgb(165, 165, 165);
+}
+
+.bg-photo-game {
+  height: 100%;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-image: url("../images/bg.png");
+}
+
+.video {
+  right: 0;
+  bottom: 0;
+}
+
+.video img {
+  border: double 8px rgb(182, 179, 175);
+  box-shadow: 10px 10px 10px black;
+}
+
+.score {
+  position: absolute;
+  width: 420px;
+  text-align: center;
+  left: 0;
+  right: 0;
+  margin: auto;
+  border-radius: 20px;
+  box-shadow: 4px 3px 3px rgb(206, 194, 194);
+}
+
+#counter {
+  display: none;
+  font-size: 80px;
+}
+
+.machineDiv {
+  width: 5%;
+  display: none;
+}
+
+.end {
+  display: none;
+}
+
+.button-end {
+  display: none;
+}

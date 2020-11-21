@@ -1,0 +1,41 @@
+{% extends 'base.html' %} {% block content%}
+
+<div class="bg-photo-game">
+  <div class="container h-100">
+    <div class="row align-items-center h-100">
+      <div class="col-8 col-sm-6 col-lg-4 mx-auto text-light">
+        <div class="card text-dark pt-3 card-radius">
+          <div class="card-body">
+            <form action="" method="POST">
+              <div class="form-group">
+                <label for="playerName">Player Name:</label>
+                <input
+                  name="playerName"
+                  type="text"
+                  class="form-control"
+                  id="playerName"
+                  aria-describedby="playerName"
+                />
+              </div>
+              <div class="form-group">
+                <label for="turns">Number of turns:</label>
+                <input
+                  name="turns"
+                  type="number"
+                  class="form-control"
+                  id="turns"
+                  aria-describedby="turns"
+                />
+              </div>
+              <div class="form-group text-right mb-0">
+                <button type="submit" class="btn btn-primary text-right">Start the game!</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

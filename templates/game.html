@@ -1,0 +1,157 @@
+{% extends 'base.html' %} {% block content%}
+
+<div class="bg-photo-game container-fluid h-100 w-100 position-relative">
+  <div class="row h-100">
+    <div id="button" class="col-12 align-self-center text-center">
+      <button id="play-button" onclick="countDown()" class="btn btn-dark pl-5 pr-5 pt-2 pb-2">
+        Play round 1
+      </button>
+    </div>
+
+    <div id="button-end" class="col-12 align-self-center text-center button-end">
+      <a id="play-again" href="{{url_for('game')}}" class="btn btn-dark pl-5 pr-5 pt-2 pb-2">
+        Play again
+      </a>
+      <a id="reset" href="{{url_for('end_game')}}" class="btn btn-dark pl-5 pr-5 pt-2 pb-2">
+        Go back to menu
+      </a>
+    </div>
+
+    <div id="machineDiv" class="col-12 align-self-center text-center machineDiv">
+      <img src="" id="machine" alt="Machine prediction" />
+    </div>
+
+    <div id="counter" class="col-12 align-self-center text-center">
+      <h1 id="names"></h1>
+    </div>
+
+    <div class="score bg-dark mt-3 p-1 text-white">
+      <h2 id="vs">0 {{ player_name }} vs Machine 0</h2>
+    </div>
+
+    <div id="end-div" class="col-12 align-self-center text-center end">
+      <h1 id="end"></h1>
+    </div>
+
+    <div class="video position-absolute text-center">
+      <h1 class="mb-0">{{ player_name }} {{ prediction }}</h1>
+      <img id="vd" src="{{ url_for('video') }}" />
+    </div>
+  </div>
+</div>
+
+<script>
+
+  const names = ["Rock!", "Paper!", "Scissors!"];
+  const images = ["rock.png", "paper.png", "scissors.png"];
+  let turns = {{ turns }}
+  var round = 1
+  let rndNum = {{ rnd_num }}
+
+  const player = {
+    name: "Player",
+    score: 0
+  }
+  const machine = {
+    name: "Machine",
+    score: 0
+  }
+
+
+  const checkResults = () => {
+    setTimeout(() => {
+      document.getElementById("counter").style.display = "none";
+      getPrediction(round);
+    }, 4500);
+  };
+
+
+  const finishRound = () => {
+    setTimeout(() => {
+      document.getElementById("machineDiv").style.display = "none"
+
+      console.log(round, turns)
+      if (round == turns) {
+        document.getElementById("end-div").style.display = "block";
+        document.getElementById("end").innerHTML = checkWinner();
+        setTimeout(() => {
+          document.getElementById("end-div").style.display = "none";
+          document.getElementById("button-end").style.display = "block";
+        }, 2000)
+      } else {
+        round++;
+        document.getElementById("play-button").innerHTML = "Play round " + round;
+        document.getElementById("button").style.display = "block";
+      }
+    }, 6000)
+  };
+
+    const updateScore = (p, m) => {
+        console.log(p, m)
+        if (p == "Rock!" && m == "Paper!") {
+          machine.score++;
+        } else if (p == "Paper!" && m == "Rock!") {
+          player.score++;
+        } else if (p == "Paper!" && m == "Scissors!") {
+          machine.score++;
+        } else if (p == "Scissors!" && m == "Paper!") {
+          player.score++;
+        } else if (p == "Rock!" && m == "Scissors!") {
+          player.score++;
+        } else if (p == "Scissors!" && m == "Rock!") {
+          machine.score++;
+        }
+    }
+
+  const getPrediction = (round) => {
+    fetch(`${window.origin}/prediction/${round}`, {
+      metchod: "GET",
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        let machine_c = names[rndNum[turns]];
+        updateScore(data, machine_c);
+        document.getElementById("machineDiv").style.display = "block";
+        document.getElementById("machine").src = "../static/images/" + machine_c + ".png";
+        document.getElementById("vs").innerHTML =
+        player.score + "  " + player.name + " vs " + machine.name + "  " + machine.score;
+        return data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const checkWinner = () => {
+    if (player.score > machine.score) {
+      return player.name + " WINS!!"
+    } else if (player.score < machine.score) {
+      return machine.name + " WINS!!"
+    } else {
+      return "THATS A DRAW"
+    }
+  }
+
+  const countDown = () => {
+    document.getElementById("button").style.display = "none";
+    document.getElementById("counter").style.display = "block";
+
+    for (let i = 0; i < 3; i++) {
+      setTimeout(() => {
+        document.getElementById("names").innerHTML = names[i];
+      }, i * 1000);
+    }
+
+    checkResults();
+    finishRound();
+
+
+    const reset = () => {
+      window.location = window.origin;
+    }
+  }
+</script>
+
+{% endblock %}
