@@ -5,9 +5,23 @@ from tensorflow.keras.backend import expand_dims
 import numpy as np
 import operator
 
+model_path = './model/'
+model = load_model(model_path)
 
-lower_skin = np.array([0, 58, 30])
-upper_skin = np.array([33, 255, 255])
+
+def predict(frame):
+    frame = img_to_array(frame, dtype='float32')
+    prediction = model.predict(expand_dims(frame,  axis=0))
+    prediction = prediction[0]
+    predictions = {}
+    print(prediction)
+    predictions['Rock!'] = prediction[0]
+    predictions['Paper!'] = prediction[1]
+    predictions['Scissors!'] = prediction[2]
+
+    predicted = max(predictions.items(), key=operator.itemgetter(1))[0]
+    print(predicted)
+    return predicted
 
 
 class Camera:
@@ -32,5 +46,6 @@ class Camera:
         width = int(w/4)
         frame = cv.resize(frame, (width, height))
         pred_frame = cv.resize(frame, (300, 300))
+        predict(pred_frame)
         ret, jpeg = cv.imencode('.jpg', frame)
         return jpeg.tobytes()

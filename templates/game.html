@@ -8,7 +8,7 @@
       </button>
     </div>
 
-    <div id="button-end" class="col-12 align-self-center text-center button-end">
+    <div id="play-again-div" class="col-12 align-self-center text-center button-end">
       <a id="play-again" href="{{url_for('game')}}" class="btn btn-dark pl-5 pr-5 pt-2 pb-2">
         Play again
       </a>
@@ -30,7 +30,7 @@
     </div>
 
     <div id="end-div" class="col-12 align-self-center text-center end">
-      <h1 id="end"></h1>
+      <h1 id="winner"></h1>
     </div>
 
     <div class="video position-absolute text-center">
@@ -42,11 +42,22 @@
 
 <script>
 
+  const counter = document.getElementById("counter");
+  const startButtonDiv = document.getElementById("button");
+  const startButton = document.getElementById("play-button");
+  const machineDiv = document.getElementById("machineDiv");
+  const machineChoice = document.getElementById("machine");
+  const scoreTable = document.getElementById("vs");
+  const endDiv = document.getElementById("end-div");
+  const winner = document.getElementById("winner")
+  const playAgainDiv = document.getElementById("play-again-div")
+
+
   const names = ["Rock!", "Paper!", "Scissors!"];
   const images = ["rock.png", "paper.png", "scissors.png"];
-  let turns = {{ turns }}
-  var round = 1
-  let rndNum = {{ rnd_num }}
+  const turns = {{ turns }}
+  const rndNum = {{ rnd_num }}
+  let round = 1
 
   const player = {
     name: "Player",
@@ -60,28 +71,27 @@
 
   const checkResults = () => {
     setTimeout(() => {
-      document.getElementById("counter").style.display = "none";
+      counter.style.display = "none";
       getPrediction(round);
-    }, 4500);
+    }, 4000);
   };
 
 
   const finishRound = () => {
     setTimeout(() => {
-      document.getElementById("machineDiv").style.display = "none"
+      machineDiv.style.display = "none"
 
-      console.log(round, turns)
       if (round == turns) {
-        document.getElementById("end-div").style.display = "block";
-        document.getElementById("end").innerHTML = checkWinner();
+        endDiv.style.display = "block";
+        winner.innerHTML = checkWinner();
         setTimeout(() => {
-          document.getElementById("end-div").style.display = "none";
-          document.getElementById("button-end").style.display = "block";
+          endDiv.style.display = "none";
+          playAgainDiv.style.display = "block";
         }, 2000)
       } else {
         round++;
-        document.getElementById("play-button").innerHTML = "Play round " + round;
-        document.getElementById("button").style.display = "block";
+        startButton.innerHTML = "Play round " + round;
+        startButtonDiv.style.display = "block";
       }
     }, 6000)
   };
@@ -113,9 +123,9 @@
       .then((data) => {
         let machine_c = names[rndNum[turns]];
         updateScore(data, machine_c);
-        document.getElementById("machineDiv").style.display = "block";
-        document.getElementById("machine").src = "../static/images/" + machine_c + ".png";
-        document.getElementById("vs").innerHTML =
+        machineDiv.style.display = "block";
+        machineChoice.src = "../static/images/" + machine_c + ".png";
+        scoreTable.innerHTML =
         player.score + "  " + player.name + " vs " + machine.name + "  " + machine.score;
         return data;
       })
@@ -135,8 +145,8 @@
   }
 
   const countDown = () => {
-    document.getElementById("button").style.display = "none";
-    document.getElementById("counter").style.display = "block";
+    startButtonDiv.style.display = "none";
+    counter.style.display = "block";
 
     for (let i = 0; i < 3; i++) {
       setTimeout(() => {

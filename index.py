@@ -76,7 +76,6 @@ def end_game():
 
 ### Utilities ###
 
-
 def generate_rnd_num(num):
     numbers = list()
     for i in range(0, num+1):
