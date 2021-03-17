@@ -3,21 +3,39 @@
 <div class="bg-photo-game container-fluid h-100 w-100 position-relative">
   <div class="row h-100">
     <div id="button" class="col-12 align-self-center text-center">
-      <button id="play-button" onclick="countDown()" class="btn btn-dark pl-5 pr-5 pt-2 pb-2">
+      <button
+        id="play-button"
+        onclick="countDown()"
+        class="btn btn-dark pl-5 pr-5 pt-2 pb-2"
+      >
         Play round 1
       </button>
     </div>
 
-    <div id="play-again-div" class="col-12 align-self-center text-center button-end">
-      <a id="play-again" href="{{url_for('game')}}" class="btn btn-dark pl-5 pr-5 pt-2 pb-2">
+    <div
+      id="play-again-div"
+      class="col-12 align-self-center text-center button-end"
+    >
+      <a
+        id="play-again"
+        href="{{url_for('game')}}"
+        class="btn btn-dark pl-5 pr-5 pt-2 pb-2"
+      >
         Play again
       </a>
-      <a id="reset" href="{{url_for('end_game')}}" class="btn btn-dark pl-5 pr-5 pt-2 pb-2">
+      <a
+        id="reset"
+        href="{{url_for('end_game')}}"
+        class="btn btn-dark pl-5 pr-5 pt-2 pb-2"
+      >
         Go back to menu
       </a>
     </div>
 
-    <div id="machineDiv" class="col-12 align-self-center text-center machineDiv">
+    <div
+      id="machineDiv"
+      class="col-12 align-self-center text-center machineDiv"
+    >
       <img src="" id="machine" alt="Machine prediction" />
     </div>
 
@@ -97,7 +115,6 @@
   };
 
     const updateScore = (p, m) => {
-        console.log(p, m)
         if (p == "Rock!" && m == "Paper!") {
           machine.score++;
         } else if (p == "Paper!" && m == "Rock!") {

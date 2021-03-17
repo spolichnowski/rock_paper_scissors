@@ -14,20 +14,22 @@ def predict(frame):
     prediction = model.predict(expand_dims(frame,  axis=0))
     prediction = prediction[0]
     predictions = {}
-    print(prediction)
     predictions['Rock!'] = prediction[0]
     predictions['Paper!'] = prediction[1]
     predictions['Scissors!'] = prediction[2]
 
     predicted = max(predictions.items(), key=operator.itemgetter(1))[0]
-    print(predicted)
     return predicted
 
 
 class Camera:
-
+    '''
+    Camera class. Uses openCV to capture frame
+    from the camera
+    '''
     def __init__(self):
-        # Initiate video capturing
+        # Initiate video capturing. Change to other number
+        # in case of using external camera
         self.video = cv.VideoCapture(0)
 
     def __del__(self):

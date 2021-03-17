@@ -8,6 +8,7 @@ from cv2 import cv2 as cv
 from Camera import Camera
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
+# Generate own secret kay  
 app.secret_key = 'abcd$'
 model_path = './model/'
 model = load_model(model_path)
@@ -15,6 +16,10 @@ model = load_model(model_path)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    '''
+    Game Menu where the player selects name and number
+    of rounds 
+    '''
     if request.method == 'POST':
         session['player'] = request.form['playerName']
         session['turns'] = request.form['turns']
@@ -25,6 +30,9 @@ def index():
 
 @app.route('/game')
 def game():
+    '''
+    Game endpoint.
+    '''
     player_name = session['player']
     turns = session['turns']
     rnd_num = generate_rnd_num(int(turns))
@@ -38,6 +46,10 @@ def game():
 
 @app.route('/prediction/<round>', methods=['GET', 'POST'])
 def get_prediction(round):
+    '''
+    Takes camera shot and produces prediction based
+    on what the image is showing.
+    '''
     frame = Camera()
     frame.take_picture(round)
     photo = cv.imread('./choices/{}.jpeg'.format(str(round)))
@@ -51,12 +63,13 @@ def get_prediction(round):
     predictions['Scissors!'] = prediction[2]
     prediction = max(
         predictions.items(), key=operator.itemgetter(1))[0]
-    print(jsonify(prediction))
     return jsonify(prediction)
 
 
-# Runs camera
 def get_camera(camera):
+    '''
+    Runs the camera
+    '''
     while True:
         frame = camera.get_video_capture()
         yield (b'--frame\r\n'
@@ -65,18 +78,30 @@ def get_camera(camera):
 
 @app.route('/video_page')
 def video():
+    '''
+    Endpoint that shows 
+    '''
     return Response(get_camera(Camera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route('/end')
 def end_game():
+    '''
+    Endpoint that clear the session and ends the game.
+    '''
     session.clear()
     return redirect(url_for('index'))
 
 ### Utilities ###
 
+
 def generate_rnd_num(num):
+    '''
+    Creates random numbers that will be later
+    transformed into game selection of rock,
+    paper or scissors.
+    '''
     numbers = list()
     for i in range(0, num+1):
         numbers.append(random.randint(0, 2))
